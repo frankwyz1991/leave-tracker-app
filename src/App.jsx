@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Plus, Trash2, Users, Clock, Download, Check, X, ChevronDown, Search, AtSign, CheckCircle, Timer, Loader2, Link, AlertCircle, ArrowRight, Lock, ArrowUpDown, ArrowUp, ArrowDown, Filter, FilePlus, FileCheck, RefreshCw, XCircle, PlayCircle } from 'lucide-react';
+import { Plus, Trash2, Users, Clock, Download, Check, X, ChevronDown, Search, AtSign, CheckCircle, Timer, Loader2, Link, AlertCircle, Lock, ArrowUpDown, ArrowUp, ArrowDown, Filter, FilePlus, FileCheck, RefreshCw, XCircle, PlayCircle } from 'lucide-react';
 
 // --- CONFIGURATION ---
 // 🔴 IMPORTANT: Replace this URL with the one you copied from "Deploy > Web App" in Google Sheets
@@ -108,8 +108,6 @@ const LeaveTracker = () => {
   const [apiPassword, setApiPassword] = useState('');
   const [authError, setAuthError] = useState('');
 
-  const [view, setView] = useState('list'); 
-  const [currentMonth, setCurrentMonth] = useState(new Date());
   const [searchTerm, setSearchTerm] = useState('');
   const [leaves, setLeaves] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -119,7 +117,6 @@ const LeaveTracker = () => {
   const [sortConfig, setSortConfig] = useState({ key: 'start', direction: 'desc' });
   
   // Unified Filter State
-  // 'ALL', 'PENDING', 'APPROVED', 'REJECTED', 'COMPLETED', 'IN_PROGRESS', 'ADDED_TODAY'
   const [filterType, setFilterType] = useState('ALL');
 
   const [isTypePickerOpen, setIsTypePickerOpen] = useState(false);
@@ -328,8 +325,6 @@ const LeaveTracker = () => {
     );
   };
 
-  const TimelineView = () => <div className="p-8 text-center text-gray-500">Timeline view is active</div>;
-
   if (!isAuthenticated) return <LoginScreen onLogin={handleLogin} error={authError} />;
 
   return (
@@ -381,11 +376,6 @@ const LeaveTracker = () => {
                     <button onClick={() => setFilterType('APPROVED')} className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${filterType === 'APPROVED' ? 'bg-white text-green-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}>Approved</button>
                     <button onClick={() => setFilterType('REJECTED')} className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${filterType === 'REJECTED' ? 'bg-white text-red-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}>Rejected</button>
                   </div>
-                  {/* View Switcher */}
-                  <div className="flex bg-gray-100 p-1 rounded-lg shrink-0">
-                     <button onClick={() => setView('list')} className={`px-3 py-1.5 text-sm font-medium rounded-md ${view === 'list' ? 'bg-white shadow-sm' : 'text-gray-500'}`}>List</button>
-                     <button onClick={() => setView('timeline')} className={`px-3 py-1.5 text-sm font-medium rounded-md ${view === 'timeline' ? 'bg-white shadow-sm' : 'text-gray-500'}`}>Timeline</button>
-                  </div>
                </div>
              </div>
 
@@ -399,7 +389,6 @@ const LeaveTracker = () => {
 
              <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden relative min-h-[400px]">
                {isLoading ? <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/90 z-10"><Loader2 className="animate-spin text-blue-600 mb-3" size={48}/><p>Loading...</p></div> : (
-                 view === 'list' ? (
                  <div className="overflow-x-auto">
                    <table className="w-full text-left border-collapse">
                      <thead>
@@ -436,7 +425,7 @@ const LeaveTracker = () => {
                      </tbody>
                    </table>
                  </div>
-               ) : <TimelineView />)}
+               )}
             </div>
           </div>
         </div>
